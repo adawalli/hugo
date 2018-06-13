@@ -1,6 +1,7 @@
 FROM alpine:latest
 
-RUN apk update &&\
+RUN set -x &&\
+    apk update &&\
     apk add --no-cache jq &&\
     latest=$(wget -q https://api.github.com/repos/gohugoio/hugo/tags -O - |\
         jq  .[0]."name" | sed 's/"//g') &&\
@@ -11,4 +12,3 @@ RUN apk update &&\
     apk del jq &&\
     rm -rf /var/cache/apk/*
 ENTRYPOINT ["/usr/bin/hugo"]
-CMD ["--help"]
